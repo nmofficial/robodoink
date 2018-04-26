@@ -1,0 +1,131 @@
+<DOCTYPE! html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" type="text/css" href="style1.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+</head>
+
+<body onload="startGame()">
+  <h1 style= vw>
+    Robodoink
+  </h1>
+  <div>
+  </div>
+
+  <p>
+    When in doubt,
+
+  </p>
+  <p>
+    doink it out!
+  </p>
+
+</body>
+
+<script>
+
+var myDoinker, myVegetableOne, myVegetableTwo;
+var rightDown = false;
+var leftDown = false;
+var upDown = false;
+var downDown = false;
+
+function startGame() {
+  myGameArea.start();
+  myDoinker = new component(10, "#ff9900", 100, 120);
+  myVegetableOne = new component(15, "green", 120, 250);
+  myVegetableTwo = new component(14, "#FFE4C4", 300, 256);
+}
+
+/*
+if (myGameArea.key == 37) {myDoinker.speedX = -0.5; }
+if (myGameArea.key == 39) {myDoinker.speedX = 0.5; }
+if (myGameArea.key == 38) {myDoinker.speedY = -0.5; }
+if (myGameArea.key == 40) {myDoinker.speedY = 0.5; }
+*/
+
+window.onkeydown = function(e) {
+// window.addEventListener('keydown', function (e) {
+  if (e.keyCode == 37) leftDown = true;
+  if (e.keyCode == 39) rightDown = true;
+  if (e.keyCode == 38) downDown = true;
+  if (e.keyCode == 40) upDown = true;
+}
+
+window.onkeyup = function(e) {
+// window.addEventListener('keyup', function (e) {
+  if (e.keyCode == 37) leftDown = false;
+  if (e.keyCode == 39) rightDown = false;
+  if (e.keyCode == 38) downDown = false;
+  if (e.keyCode == 40) upDown =  false;
+}
+
+/*window.addEventListener('keydown', function (e) {
+  myGameArea.key = e.keyCode;debug
+});
+window.addEventListener('keyup', function (e) {
+  myGameArea.key = -1;
+});*/
+
+var myGameArea = {
+  canvas : document.createElement("canvas"),
+  start : function() {
+    this.canvas.width = 480;
+    this.canvas.height = 270;
+    this.context = this.canvas.getContext("2d");
+    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    this.interval = setInterval(updateGameArea, 5);
+  },
+  clear : function(){
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+}
+
+function component(radius, color, x, y) {
+  this.width = radius;
+  this.speedX = 0;
+  this.speedY = 0;
+  this.x = x;
+  this.y = y;
+  this.vegetableDirection = Math.random()*2;
+  this.update = function() {
+    ctx = myGameArea.context;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.width, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+  this.newPosition = function(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+  }
+}
+
+function updateGameArea() {
+  myGameArea.clear();
+  myDoinker.speedX = 0;
+  myDoinker.speedY = 0;
+  if (leftDown) {myDoinker.speedX = -0.5; }
+  if (rightDown) {myDoinker.speedX = 0.5; }
+  if (downDown) {myDoinker.speedY = -0.5; }
+  if (upDown) {myDoinker.speedY = 0.5; }
+  console.log(leftDown);
+  myDoinker.newPosition();
+  myDoinker.update();
+
+  if (myVegetableOne.vegetableDirection < 1) {myVegetableOne.speedX = .3;}
+  else {myVegetableOne.speedX = -.3;}
+  myVegetableOne.newPosition();
+  myVegetableOne.update();
+
+  if (myVegetableTwo.vegetableDirection < 1) {myVegetableTwo.speedX = .3;}
+  else {myVegetableTwo.speedX = -.3;}
+  myVegetableTwo.newPosition();
+  myVegetableTwo.update();
+}
+
+</script>
+</html>
