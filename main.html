@@ -76,7 +76,9 @@ function component(radius, color, x, y) {
   this.speedY = 0;
   this.x = x;
   this.y = y;
-  this.vegetableDirection = Math.random()*2;
+  var randomDirection = Math.random()*2;
+  if (randomDirection < 1) {this.vegetableDirection = 1; }
+  else {this.vegetableDirection = -1; }
   this.update = function() {
     ctx = myGameArea.context;
     ctx.beginPath();
@@ -95,26 +97,29 @@ function updateGameArea() {
   myDoinker.speedX = 0;
   myDoinker.speedY = 0;
 
-  if (myDoinker.x >= 470) {rightDown = false;}
+  if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
   if (myDoinker.x <= 10) {leftDown = false;}
-  if (myDoinker.y >= 260) {upDown = false;}
+  if (myDoinker.y >= myGameArea.canvas.height - 10) {upDown = false;}
+
 
   if (leftDown) {myDoinker.speedX = -0.5; }
   if (rightDown) {myDoinker.speedX = 0.5; }
   if (downDown) {myDoinker.speedY = -0.5; }
   if (upDown) {myDoinker.speedY = 0.5; }
-  console.log(leftDown);
+
   myDoinker.newPosition();
   myDoinker.update();
 
-  if (myVegetableOne.vegetableDirection < 1) {myVegetableOne.speedX = .3;}
+  if ((myVegetableOne.x >= myGameArea.canvas.width - 10) || myVegetableOne.x <= 10) {myVegetableOne.vegetableDirection = myVegetableOne.vegetableDirection * -1;}
+  if (myVegetableOne.vegetableDirection == 1) {myVegetableOne.speedX = .3;}
   else {myVegetableOne.speedX = -.3;}
-  //myVegetableOne.newPosition();
+  myVegetableOne.newPosition();
   myVegetableOne.update();
 
-  if (myVegetableTwo.vegetableDirection < 1) {myVegetableTwo.speedX = .3;}
+  if ((myVegetableTwo.x >= myGameArea.canvas.width - 10) || myVegetableTwo.x <= 10) {myVegetableTwo.vegetableDirection = myVegetableTwo.vegetableDirection * -1;}
+  if (myVegetableTwo.vegetableDirection == 1) {myVegetableTwo.speedX = .3;}
   else {myVegetableTwo.speedX = -.3;}
-  //myVegetableTwo.newPosition();
+  myVegetableTwo.newPosition();
   myVegetableTwo.update();
 }
 
