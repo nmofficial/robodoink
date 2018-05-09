@@ -30,8 +30,8 @@
 var myDoinker, myVegetableOne, myVegetableTwo;
 var rightDown = false;
 var leftDown = false;
-var upDown = false;
 var downDown = false;
+var upDown = false;
 
 function startGame() {
   myGameArea.start();
@@ -44,16 +44,20 @@ window.onkeydown = function(e) {
 // window.addEventListener('keydown', function (e) {
   if (e.keyCode == 65) leftDown = true;
   if (e.keyCode == 68) rightDown = true;
-  if (e.keyCode == 87) downDown = true;
-  if (e.keyCode == 83) upDown = true;
+  if (e.keyCode == 87) upDown = true;
+  if (e.keyCode == 83) downDown = true;
 }
 
 window.onkeyup = function(e) {
 // window.addEventListener('keyup', function (e) {
   if (e.keyCode == 65) leftDown = false;
   if (e.keyCode == 68) rightDown = false;
-  if (e.keyCode == 87) downDown = false;
-  if (e.keyCode == 83) upDown =  false;
+  if (e.keyCode == 87) upDown = false;
+  if (e.keyCode == 83) downDown =  false;
+}
+
+function gravity() {
+
 }
 
 var myGameArea = {
@@ -99,13 +103,13 @@ function updateGameArea() {
 
   if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
   if (myDoinker.x <= 10) {leftDown = false;}
-  if (myDoinker.y >= myGameArea.canvas.height - 10) {upDown = false;}
+  if (myDoinker.y >= myGameArea.canvas.height - 10) {downDown = false;}
 
 
   if (leftDown) {myDoinker.speedX = -0.5; }
   if (rightDown) {myDoinker.speedX = 0.5; }
-  if (downDown) {myDoinker.speedY = -0.5; }
-  if (upDown) {myDoinker.speedY = 0.5; }
+  if (upDown) {myDoinker.speedY = -0.5; }
+  if (downDown) {myDoinker.speedY = 0.5; }
 
   myDoinker.newPosition();
   myDoinker.update();
