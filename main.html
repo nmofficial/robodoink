@@ -33,9 +33,12 @@ var leftDown = false;
 var downDown = false;
 var upDown = false;
 
+var canPressUp = true;
+var canPressUpInter = true;
+
 function startGame() {
   myGameArea.start();
-  myDoinker = new component(10, "#ff9900", 100, 120);
+  myDoinker = new component(10, "#ff9900", 100, 260);
   myVegetableOne = new component(15, "green", 120, 250);
   myVegetableTwo = new component(14, "#FFE4C4", 300, 256);
 }
@@ -44,7 +47,7 @@ window.onkeydown = function(e) {
 // window.addEventListener('keydown', function (e) {
   if (e.keyCode == 65) leftDown = true;
   if (e.keyCode == 68) rightDown = true;
-  if (e.keyCode == 87) upDown = true;
+  if ((e.keyCode == 87) && (myDoinker.y >= 10)) upDown = true;
   if (e.keyCode == 83) downDown = true;
 }
 
@@ -52,7 +55,10 @@ window.onkeyup = function(e) {
 // window.addEventListener('keyup', function (e) {
   if (e.keyCode == 65) leftDown = false;
   if (e.keyCode == 68) rightDown = false;
-  if (e.keyCode == 87) upDown = false;
+  if (e.keyCode == 87) {
+    upDown = false;
+    canPressUp = true;
+  }
   if (e.keyCode == 83) downDown =  false;
 }
 
@@ -96,20 +102,43 @@ function component(radius, color, x, y) {
   }
 }
 
+//set intial speed for X and Y. Y won't reset so gravity will work.
+myDoinker.speedX = 0;
+myDoinker.speedY = 0;
+
 function updateGameArea() {
   myGameArea.clear();
   myDoinker.speedX = 0;
-  myDoinker.speedY = 0;
 
   if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
   if (myDoinker.x <= 10) {leftDown = false;}
   if (myDoinker.y >= myGameArea.canvas.height - 10) {downDown = false;}
 
 
-  if (leftDown) {myDoinker.speedX = -0.5; }
-  if (rightDown) {myDoinker.speedX = 0.5; }
-  if (upDown) {myDoinker.speedY = -0.5; }
+  if (leftDown) {myDoinker.speedX = -.75; }
+  if (rightDown) {myDoinker.speedX = .75; }
+
+  if (upDown) {
+    if (canPressUp == true && canPressUpInter == true) myDoinker.speedY = -2;
+    canPressUp = false;
+    canPressUpInter = false;
+  }
   if (downDown) {myDoinker.speedY = 0.5; }
+
+
+  //gravity
+  if (myDoinker.y < 260) {
+    myDoinker.speedY += 0.065;
+  } else if (myDoinker.y > 260){
+    myDoinker.y = 260;
+    myDoinker.speedY = 0;
+  } else if (myDoinker.y >= 260) {
+    canPressUpInter = true;
+  }
+
+  //for testing purposes:
+  console.log(myDoinker.y);
+  console.log(myDoinker.speedY);
 
   myDoinker.newPosition();
   myDoinker.update();
