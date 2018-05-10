@@ -30,7 +30,6 @@
 var myDoinker, myVegetableOne, myVegetableTwo;
 var rightDown = false;
 var leftDown = false;
-var downDown = false;
 var upDown = false;
 
 var canPressUp = true;
@@ -48,7 +47,6 @@ window.onkeydown = function(e) {
   if (e.keyCode == 65) leftDown = true;
   if (e.keyCode == 68) rightDown = true;
   if ((e.keyCode == 87) && (myDoinker.y >= 10)) upDown = true;
-  if (e.keyCode == 83) downDown = true;
 }
 
 window.onkeyup = function(e) {
@@ -59,7 +57,6 @@ window.onkeyup = function(e) {
     upDown = false;
     canPressUp = true;
   }
-  if (e.keyCode == 83) downDown =  false;
 }
 
 function gravity() {
@@ -112,23 +109,21 @@ function updateGameArea() {
 
   if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
   if (myDoinker.x <= 10) {leftDown = false;}
-  if (myDoinker.y >= myGameArea.canvas.height - 10) {downDown = false;}
 
 
   if (leftDown) {myDoinker.speedX = -.75; }
   if (rightDown) {myDoinker.speedX = .75; }
 
   if (upDown) {
-    if (canPressUp == true && canPressUpInter == true) myDoinker.speedY = -2;
+    if (canPressUp && canPressUpInter) myDoinker.speedY = -2;
     canPressUp = false;
     canPressUpInter = false;
   }
-  if (downDown) {myDoinker.speedY = 0.5; }
 
 
   //gravity
   if (myDoinker.y < 260) {
-    myDoinker.speedY += 0.065;
+    myDoinker.speedY += 0.04;
   } else if (myDoinker.y > 260){
     myDoinker.y = 260;
     myDoinker.speedY = 0;
