@@ -27,7 +27,7 @@
 
 <script>
 
-var myDoinker, myVegetableOne, myVegetableTwo;
+var myDoinker, myVegetableOne, myVegetableTwo, myScore;
 var rightDown = false;
 var leftDown = false;
 var upDown = false;
@@ -40,17 +40,18 @@ function startGame() {
   myDoinker = new component(10, "#ff9900", 100, 260);
   myVegetableOne = new component(15, "green", 120, 250);
   myVegetableTwo = new component(14, "#FFE4C4", 300, 256);
+  myScore = new component("30px", "blue", 20, 40, "Arial", "text");
 }
 
 window.onkeydown = function(e) {
-// window.addEventListener('keydown', function (e) {
+  // window.addEventListener('keydown', function (e) {
   if (e.keyCode == 65) leftDown = true;
   if (e.keyCode == 68) rightDown = true;
   if ((e.keyCode == 87) && (myDoinker.y >= 10)) upDown = true;
 }
 
 window.onkeyup = function(e) {
-// window.addEventListener('keyup', function (e) {
+  // window.addEventListener('keyup', function (e) {
   if (e.keyCode == 65) leftDown = false;
   if (e.keyCode == 68) rightDown = false;
   if (e.keyCode == 87) {
@@ -70,6 +71,7 @@ var myGameArea = {
     this.canvas.height = 270;
     this.context = this.canvas.getContext("2d");
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    this.frameNumber = 0;
     this.interval = setInterval(updateGameArea, 5);
   },
   clear : function(){
@@ -77,23 +79,34 @@ var myGameArea = {
   }
 }
 
-function component(radius, color, x, y) {
+function component(radius, color, x, y, extra, type) {
+  this.type = type;
   this.width = radius;
   this.speedX = 0;
   this.speedY = 0;
   this.x = x;
   this.y = y;
+  this.extra = extra;
   var randomDirection = Math.random()*2;
   if (randomDirection < 1) {this.vegetableDirection = 1; }
   else {this.vegetableDirection = -1; }
+
   this.update = function() {
+
     ctx = myGameArea.context;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.width, 0, Math.PI*2);
-    ctx.fillStyle = color;
-    ctx.fill();
+
+    if (this.type == "text") {
+      ctx.font = this.width + " " + this.extra;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } else {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.width, 0, Math.PI*2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
   }
-  this.newPosition = function(){
+  this.newPosition = function() {
     this.x += this.speedX;
     this.y += this.speedY;
   }
@@ -105,6 +118,7 @@ myDoinker.speedY = 0;
 
 function updateGameArea() {
   myGameArea.clear();
+  myGameArea.frameNumber ++;
   myDoinker.speedX = 0;
 
   if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
@@ -115,7 +129,7 @@ function updateGameArea() {
   if (rightDown) {myDoinker.speedX = .75; }
 
   if (upDown) {
-    if (canPressUp && canPressUpInter) myDoinker.speedY = -2;
+    if (canPressUp && canPressUpInter) myDoinker.speedY = -1.85;
     canPressUp = false;
     canPressUpInter = false;
   }
@@ -123,7 +137,7 @@ function updateGameArea() {
 
   //gravity
   if (myDoinker.y < 260) {
-    myDoinker.speedY += 0.04;
+    myDoinker.speedY += 0.035;
   } else if (myDoinker.y > 260){
     myDoinker.y = 260;
     myDoinker.speedY = 0;
@@ -132,6 +146,7 @@ function updateGameArea() {
   }
 
   //for testing purposes:
+  console.log(myGameArea.frameNumber);
   console.log(myDoinker.y);
   console.log(myDoinker.speedY);
 
@@ -149,6 +164,9 @@ function updateGameArea() {
   else {myVegetableTwo.speedX = -.3;}
   myVegetableTwo.newPosition();
   myVegetableTwo.update();
+
+  myScore.text = "SCORE: ";
+  myScore.update();
 }
 
 </script>
