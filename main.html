@@ -27,7 +27,7 @@
 
 <script>
 
-var myDoinker, myVegetableOne, myVegetableTwo, myScore;
+var myDoinker, myScore;
 var rightDown = false;
 var leftDown = false;
 var upDown = false;
@@ -35,12 +35,22 @@ var upDown = false;
 var canPressUp = true;
 var canPressUpInter = true;
 
+var veggies = [];
+var die = false;
+
 function startGame() {
   myGameArea.start();
-  myDoinker = new component(10, "#ff9900", 100, 260);
-  myVegetableOne = new component(15, "green", 120, 250);
-  myVegetableTwo = new component(14, "#FFE4C4", 300, 256);
-  myScore = new component("30px", "blue", 20, 40, "Arial", "text");
+  myDoinker = new component(10, "#ff9900", 100, 260, 0, 0);
+  myScore = new component("30px", "blue", 20, 40, 0, 0, "Arial", "text");
+  for (var i = 0; i < 3; i++) {
+    // var startX = 15 + Math.floor((Math.random()) * (myGameArea.canvas.width - 29));
+    var startSide = Math.round(Math.random());
+    if (startSide == 0) {
+      veggies.push(new component(15, "green", -15, 256, 1, 0, -1, "veggie"));
+    } else {
+      veggies.push(new component(15, "green", myGameArea.canvas.width + 15, 256, -1, 0, -1, "veggie"));
+    }
+  }
 }
 
 window.onkeydown = function(e) {
@@ -76,20 +86,30 @@ var myGameArea = {
   },
   clear : function(){
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  },
+  stop : function(){
+    // const context = canvas.getContext('2d');
+    // myGameArea.context.clearRect(0, 0, canvas.width, canvas.height);
+    myGameArea.clear();
   }
 }
 
-function component(radius, color, x, y, extra, type) {
+function component(radius, color, x, y, dx, dy, extra, type) {
   this.type = type;
   this.width = radius;
-  this.speedX = 0;
-  this.speedY = 0;
+  this.speedX = dx;
+  this.speedY = dy;
+  this.score = 0;
+  this.dstreak = 0;
+  this.pointValue = 10;
   this.x = x;
   this.y = y;
   this.extra = extra;
-  var randomDirection = Math.random()*2;
-  if (randomDirection < 1) {this.vegetableDirection = 1; }
-  else {this.vegetableDirection = -1; }
+  // var randomDirection = Math.random()*2;
+  // if (randomDirection < 1) {this.vegetableDirection = 1; }
+  // else {this.vegetableDirection = -1; }
+
+  if (this.type == "veggie") this.vegetableDirection = this.speedX;
 
   this.update = function() {
 
@@ -116,57 +136,81 @@ function component(radius, color, x, y, extra, type) {
 myDoinker.speedX = 0;
 myDoinker.speedY = 0;
 
+function collisions() {
+  for (var i = 0; i < veggies.length; i++) {
+    if (Math.abs(myDoinker.x - veggies[i].x) < myDoinker.width) {
+      if (veggies[i].y - myDoinker.y > veggies[i].width/4 && veggies[i].y - myDoinker.y < myDoinker.width + veggies[i].width) {
+        myDoinker.streak++;
+        myDoinker.score += veggies[i].pointValue * myDoinker.streak;
+        veggies.splice(i, 1);
+        myDoinker.speedY = -1.85;
+        var startSide = Math.round(Math.random());
+        if (startSide == 0) {
+          veggies.push(new component(15, "green", -15, 256, 1, 0, -1, "veggie"));
+        } else {
+          veggies.push(new component(15, "green", myGameArea.canvas.width + 15, 256, -1, 0, -1, "veggie"));
+        }
+      } else if (veggies[i].y - myDoinker.y <= veggies[i].width/4) {
+        die = true;
+      }
+    }
+  }
+}
+
 function updateGameArea() {
-  myGameArea.clear();
-  myGameArea.frameNumber ++;
-  myDoinker.speedX = 0;
+  if(die){
+    myGameArea.stop();
+  } else {
+    myGameArea.clear();
+    myGameArea.frameNumber++;
+    myDoinker.speedX = 0;
 
-  if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
-  if (myDoinker.x <= 10) {leftDown = false;}
+    if (myDoinker.x >= myGameArea.canvas.width - 10) {rightDown = false;}
+    if (myDoinker.x <= 10) {leftDown = false;}
 
 
-  if (leftDown) {myDoinker.speedX = -.75; }
-  if (rightDown) {myDoinker.speedX = .75; }
+    if (leftDown) {myDoinker.speedX = -.75; }
+    if (rightDown) {myDoinker.speedX = .75; }
 
-  if (upDown) {
-    if (canPressUp && canPressUpInter) myDoinker.speedY = -1.85;
-    canPressUp = false;
-    canPressUpInter = false;
+    if (upDown) {
+      if (canPressUp && canPressUpInter) myDoinker.speedY = -1.85;
+      canPressUp = false;
+      canPressUpInter = false;
+    }
+
+
+    //gravity
+    if (myDoinker.y < 260) {
+      myDoinker.speedY += 0.035;
+    } else if (myDoinker.y > 260){
+      myDoinker.y = 260;
+      myDoinker.speedY = 0;
+    } else if (myDoinker.y >= 260) {
+      canPressUpInter = true;
+    }
+
+    //for testing purposes:
+    console.log(myGameArea.frameNumber);
+    console.log(myDoinker.y);
+    console.log(myDoinker.speedY);
+
+    if(myDoinker.y == 260) {myDoinker.streak = 0;}
+
+    myDoinker.newPosition();
+    myDoinker.update();
+
+    for (var i = 0; i < veggies.length; i++) {
+      //if ((veggies[i].x >= myGameArea.canvas.width - 15) || veggies[i].x <= 10) {veggies[i].vegetableDirection = veggies[i].vegetableDirection * -1;}
+      if (veggies[i].vegetableDirection == 1) {veggies[i].speedX = .3;}
+      else {veggies[i].speedX = -.3;}
+      veggies[i].newPosition();
+      veggies[i].update();
+    }
+
+    collisions();
+    myScore.text = "SCORE: " + myDoinker.score;
+    myScore.update();
   }
-
-
-  //gravity
-  if (myDoinker.y < 260) {
-    myDoinker.speedY += 0.035;
-  } else if (myDoinker.y > 260){
-    myDoinker.y = 260;
-    myDoinker.speedY = 0;
-  } else if (myDoinker.y >= 260) {
-    canPressUpInter = true;
-  }
-
-  //for testing purposes:
-  console.log(myGameArea.frameNumber);
-  console.log(myDoinker.y);
-  console.log(myDoinker.speedY);
-
-  myDoinker.newPosition();
-  myDoinker.update();
-
-  if ((myVegetableOne.x >= myGameArea.canvas.width - 10) || myVegetableOne.x <= 10) {myVegetableOne.vegetableDirection = myVegetableOne.vegetableDirection * -1;}
-  if (myVegetableOne.vegetableDirection == 1) {myVegetableOne.speedX = .3;}
-  else {myVegetableOne.speedX = -.3;}
-  myVegetableOne.newPosition();
-  myVegetableOne.update();
-
-  if ((myVegetableTwo.x >= myGameArea.canvas.width - 10) || myVegetableTwo.x <= 10) {myVegetableTwo.vegetableDirection = myVegetableTwo.vegetableDirection * -1;}
-  if (myVegetableTwo.vegetableDirection == 1) {myVegetableTwo.speedX = .3;}
-  else {myVegetableTwo.speedX = -.3;}
-  myVegetableTwo.newPosition();
-  myVegetableTwo.update();
-
-  myScore.text = "SCORE: ";
-  myScore.update();
 }
 
 </script>
