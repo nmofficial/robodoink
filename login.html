@@ -49,7 +49,7 @@
             document.getElementById("error").innerHTML = errorMessage;
         }).then(function(){
           console.log("signed in, current user is: " + firebase.auth().currentUser.email);
-          window.location.href="leaderboard.html?"+firebase.auth().currentUser.email;
+          window.location.href="main.html?"+firebase.auth().currentUser.email;
         });
       }
       function signOut(){
