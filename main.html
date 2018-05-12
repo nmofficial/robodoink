@@ -10,6 +10,9 @@
 </head>
 
 <body onload="startGame()">
+  <center>
+  <div id="insertHere"></div>
+  <div id = "restartButton"></div>
   <h1>
     Robodoink
   </h1>
@@ -22,7 +25,7 @@
   <p>
     doink it out!
   </p>
-
+  </center>
 </body>
 
 <script>
@@ -31,6 +34,8 @@ var myDoinker, myScore;
 var rightDown = false;
 var leftDown = false;
 var upDown = false;
+
+var dead = false;
 
 var canPressUp = true;
 var canPressUpInter = true;
@@ -79,8 +84,9 @@ var myGameArea = {
   start : function() {
     this.canvas.width = 480;
     this.canvas.height = 270;
+    this.canvas.id="gameAreaCanvas";
     this.context = this.canvas.getContext("2d");
-    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    document.getElementById("insertHere").appendChild(this.canvas);
     this.frameNumber = 0;
     this.interval = setInterval(updateGameArea, 5);
   },
@@ -157,10 +163,30 @@ function collisions() {
   }
 }
 
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content;
+}
+
+function reload(){
+	location.reload();
+}
+
+
 function updateGameArea() {
-  if(die){
+  if(dead){
+    
+  }
+
+  else if(die){
     myGameArea.stop();
-  } else {
+    (document.getElementById("restartButton")).appendChild(htmlToElement("<h1>You Died :(</h1>"));
+    (document.getElementById("restartButton")).appendChild(htmlToElement("<center><button onclick='reload()'>Restart!</button></center>"));
+    dead = true;
+  }
+  else {
     myGameArea.clear();
     myGameArea.frameNumber++;
     myDoinker.speedX = 0;
