@@ -19,11 +19,40 @@
       };
       firebase.initializeApp(config);
     </script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="about.html">RoboDoink</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="main.html">Play </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="leaderboard.html">Leaderboard </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Switch Account </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <center>
       <h1>Leaderboard</h1>
       </center>
-      <pre id="board"></pre>
+      <table class="table" id="leaderboard">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody id="boardBody">
+        </tbody>
+      </table>
+      <pre id="boardJson"></pre>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
@@ -31,11 +60,22 @@
 
 
     <script>
+      function htmlToElement(html) {
+          var template = document.createElement('template');
+          html = html.trim(); // Never return a text node of whitespace as the result
+          template.innerHTML = html;
+          return template.content;
+      }
       var database = firebase.database();
     	firebase.database().ref('/users/').once('value').then(function(snapshot) {
+          var users = ["arulkapoor@gmail","carmel@carmel", "festomanny4@gmail", "n@n", "owen@owen", "p@p", "williamcgolub@gmail"];
           var leaderboard = (snapshot.val());
-          console.log(leaderboard);
-          document.getElementById("board").innerHTML = JSON.stringify(leaderboard, null, 3);
+          for(var i = 0; i<users.length; i++){
+            var tempName = (leaderboard[users[i]].name);
+            var tempScore = (leaderboard[users[i]].score);
+            var table = document.getElementById("leaderboard");
+            table.appendChild(htmlToElement("<tr><th scope='col'>"+tempName+"</th><th scope='col'>"+tempScore+"</th></tr>"));
+          }
         });
     </script>
   </body>

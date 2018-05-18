@@ -25,6 +25,26 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 	</head>
 	<body onload="startGame()" style="background-color: black">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		  <a class="navbar-brand" href="about.html">RoboDoink</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="main.html">Play <span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="leaderboard.html">Leaderboard </a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="index.html">Switch Account </a>
+		      </li>
+		    </ul>
+		  </div>
+		</nav>
 		<center>
 			<br>
 			<div id="insertHere"></div>
@@ -70,15 +90,15 @@
 		}
 		window.onkeydown = function(e) {
 		    // window.addEventListener('keydown', function (e) {
-		    if (e.keyCode == 65) leftDown = true;
-		    if (e.keyCode == 68) rightDown = true;
-		    if ((e.keyCode == 87) && (myDoinker.y >= 10)) upDown = true;
+		    if (e.keyCode == 65 || e.keyCode == 37) leftDown = true;
+		    if (e.keyCode == 68 || e.keyCode == 39) rightDown = true;
+		    if (((e.keyCode == 87) || (e.keyCode == 38) || (e.keyCode == 32)) && (myDoinker.y >= 10)) upDown = true;
 		}
 		window.onkeyup = function(e) {
 		    // window.addEventListener('keyup', function (e) {
-		    if (e.keyCode == 65) leftDown = false;
-		    if (e.keyCode == 68) rightDown = false;
-		    if (e.keyCode == 87) {
+		    if (e.keyCode == 65 || e.keyCode == 37) leftDown = false;
+		    if (e.keyCode == 68 || e.keyCode == 39) rightDown = false;
+		    if ((e.keyCode == 87) || (e.keyCode == 38) || (e.keyCode == 32)) {
 		        upDown = false;
 		        canPressUp = true;
 		    }
