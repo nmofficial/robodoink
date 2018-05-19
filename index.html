@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 	</head>
-	<body onload="startGame()" style="background-color: black">
+	<body onload="startGame()">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="about.html">RoboDoink</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,6 @@
 		  	</div>
 		</nav>
 		<center>
-			<br>
 			<div id="insertHere">
 				<canvas id='canvas'></canvas>
 			</div>
@@ -102,14 +101,14 @@
 		function startGame() {
 		    myGameArea.start();
 		    myDoinker = new component(10, "#ff9900", 100, 260, 0, 0);
-		    myScore = new component("30px", "blue", 20, 40, 0, 0, "Arial", "text");
+		    myScore = new component("30px", "#2c3e50", 20, 40, 0, 0, "Arial", "text");
 		    for (var i = 0; i < 3; i++) {
 		        // var startX = 15 + Math.floor((Math.random()) * (myGameArea.canvas.width - 29));
 		        var startSide = Math.round(Math.random());
 		        if (startSide == 0) {
-		            veggies.push(new component(15, "green", -15, 256, 1, 0, -1, "veggie"));
+		            veggies.push(new component(15, "#27ae60", -15, 256, 1, 0, -1, "veggie"));
 		        } else {
-		            veggies.push(new component(15, "green", myGameArea.canvas.width + 15, 256, -1, 0, -1, "veggie"));
+		            veggies.push(new component(15, "#27ae60", myGameArea.canvas.width + 15, 256, -1, 0, -1, "veggie"));
 		        }
 		    }
 		}
