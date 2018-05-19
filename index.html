@@ -19,7 +19,7 @@
 			firebase.initializeApp(config);
 		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -47,7 +47,9 @@
 		</nav>
 		<center>
 			<br>
-			<div id="insertHere"></div>
+			<div id="insertHere">
+				<canvas id='canvas'></canvas>
+			</div>
 			<div id = "restartButton"></div>
 			<h1>Robodoink</h1>
 			<p>
@@ -60,8 +62,30 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	</body>
 	<script>
-		
-		
+		var PIXEL_RATIO = (function () {
+		    var ctx = document.createElement("canvas").getContext("2d"),
+		        dpr = window.devicePixelRatio || 1,
+		        bsr = ctx.webkitBackingStorePixelRatio ||
+		              ctx.mozBackingStorePixelRatio ||
+		              ctx.msBackingStorePixelRatio ||
+		              ctx.oBackingStorePixelRatio ||
+		              ctx.backingStorePixelRatio || 1;
+
+		    return dpr / bsr;
+		})();
+
+		createHiDPICanvas = function(w, h, ratio, name) {
+		    if (!ratio) { ratio = PIXEL_RATIO; }
+		    var can = document.getElementById(name);
+		    can.width = w * ratio;
+		    can.height = h * ratio;
+		    can.style.width = w + "px";
+		    can.style.height = h + "px";
+		    can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
+		    return can;
+		}
+
+		var RESOLUTIONVAR = 2;
 		
 		var myDoinker, myScore;
 		var rightDown = false;
@@ -107,13 +131,13 @@
 
 		function gravity() {}
 		var myGameArea = {
-		    canvas: document.createElement("canvas"),
+		    //canvas: document.createElement("canvas"),
+		    canvas: createHiDPICanvas(window.outerWidth, window.outerHeight, RESOLUTIONVAR, "canvas"),
 		    start: function() {
-		        this.canvas.width = 480;
-		        this.canvas.height = 270;
-		        this.canvas.id = "gameAreaCanvas";
+		        // this.canvas.width = window.outerWidth;
+		        // this.canvas.height = window.outerHeight;
 		        this.context = this.canvas.getContext("2d");
-		        document.getElementById("insertHere").appendChild(this.canvas);
+		        // document.getElementById("insertHere").appendChild(this.canvas);
 		        this.frameNumber = 0;
 		        this.interval = setInterval(updateGameArea, 5);
 		    },
