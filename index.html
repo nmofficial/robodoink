@@ -230,7 +230,7 @@
 				  }
 				});
 		    } else {
-		    	console.log(myGameArea.frameNumber);
+		    	// console.log(myGameArea.frameNumber);
 					//respawn
 		    	/*if(myGameArea.frameNumber<3000){
 			    	if(myGameArea.frameNumber%1300 == 0){
@@ -252,7 +252,11 @@
 			            }
 			    	}
 			    } */
-					if(Math.Pow(myGameArea.frameNumber/200, 1.5)%1 == 0) {
+			    var test = Math.pow(myGameArea.frameNumber/200, 1.5);
+			    var floored = Math.floor(test);
+			    console.log(test/floored % 1);
+					if(test == 0) {
+						console.log(test);
 						var startSide = Math.round(Math.random());
 								if (startSide == 0) {
 										veggies.push(new component(15, "#27ae60", -15, 256, 1.5, 0, -1, "veggie"));
