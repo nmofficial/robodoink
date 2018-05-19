@@ -1,10 +1,9 @@
 body {
-  	background-color: black;
+  	background-color: white;
 }
 
 canvas {
-  	border: 1px solid #d3d3d3;
-  	background-color: black;
+  	background-color: #3498db;
 }
 
 h1 {
@@ -16,7 +15,6 @@ h1 {
 }
 
 p {
-  	margin: auto;
   	background-color: maroon;
   	color: white;
   	font-family: "Montserrat", sans-serif;
