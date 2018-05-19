@@ -126,15 +126,10 @@
 		    }
 		}
 
-		function gravity() {}
 		var myGameArea = {
-		    //canvas: document.createElement("canvas"),
-		    canvas: createHiDPICanvas(window.outerWidth, window.outerHeight, RESOLUTIONVAR, "canvas"),
+		    canvas: createHiDPICanvas(window.innerWidth, window.innerHeight, RESOLUTIONVAR, "canvas"),
 		    start: function() {
-		        // this.canvas.width = window.outerWidth;
-		        // this.canvas.height = window.outerHeight;
 		        this.context = this.canvas.getContext("2d");
-		        // document.getElementById("insertHere").appendChild(this.canvas);
 		        this.frameNumber = 0;
 		        this.interval = setInterval(updateGameArea, 5);
 		    },
@@ -142,11 +137,10 @@
 		        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		    },
 		    stop: function() {
-		        //const context = canvas.getContext('2d');
-		        //myGameArea.context.clearRect(0, 0, canvas.width, canvas.height);
 		        myGameArea.clear();
 		    }
 		}
+		$('#insertHere').height(window.innerHeight);
 
 		function component(radius, color, x, y, dx, dy, extra, type) {
 		    this.type = type;
