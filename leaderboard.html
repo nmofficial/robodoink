@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Leaderboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  </head>
-  <body>
-    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyDr-xP4FISmfluSftaWc0fZRVxUMEac8Ck",
-        authDomain: "robodoi-20d60.firebaseapp.com",
-        databaseURL: "https://robodoi-20d60.firebaseio.com",
-        projectId: "robodoi-20d60",
-        storageBucket: "robodoi-20d60.appspot.com",
-        messagingSenderId: "619073156015"
-      };
-      firebase.initializeApp(config);
+  	<head>
+    	<title>Leaderboard</title>
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  	</head>
+  	<body>
+    	<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-app.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-auth.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-database.js"></script>
+    	<script>
+      	// Initialize Firebase
+      	var config = {
+	        apiKey: "AIzaSyDr-xP4FISmfluSftaWc0fZRVxUMEac8Ck",
+	        authDomain: "robodoi-20d60.firebaseapp.com",
+	        databaseURL: "https://robodoi-20d60.firebaseio.com",
+	        projectId: "robodoi-20d60",
+	        storageBucket: "robodoi-20d60.appspot.com",
+	        messagingSenderId: "619073156015"
+      	};
+      	firebase.initializeApp(config);
     </script>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="about.html">RoboDoink</a>
@@ -42,42 +42,40 @@
 	  	</div>
 	</nav>
     <center>
-      <h1>Leaderboard</h1>
-      </center>
-      <table class="table" id="leaderboard">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Score</th>
-          </tr>
-        </thead>
-        <tbody id="boardBody">
-        </tbody>
-      </table>
-      <pre id="boardJson"></pre>
+    	<h1>Leaderboard</h1>
+    </center>
+    <table class="table" id="leaderboard">
+    	<thead>
+      		<tr>
+        		<th scope="col">Name</th>
+        		<th scope="col">Score</th>
+      		</tr>
+    	</thead>
+    	<tbody id="boardBody"></tbody>
+    </table>
+    <pre id="boardJson"></pre>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-
     <script>
-      function htmlToElement(html) {
-          var template = document.createElement('template');
-          html = html.trim(); // Never return a text node of whitespace as the result
-          template.innerHTML = html;
-          return template.content;
-      }
-      var database = firebase.database();
+      	function htmlToElement(html) {
+          	var template = document.createElement('template');
+          	html = html.trim(); // Never return a text node of whitespace as the result
+          	template.innerHTML = html;
+          	return template.content;
+      	}
+      	var database = firebase.database();
     	firebase.database().ref('/users/').once('value').then(function(snapshot) {
-          var users = ["arulkapoor@gmail","carmel@carmel", "festomanny4@gmail", "n@n", "owen@owen", "p@p", "williamcgolub@gmail", "l@l"];
-          var leaderboard = (snapshot.val());
-          for(var i = 0; i<users.length; i++){
-            var tempName = (leaderboard[users[i]].name);
-            var tempScore = (leaderboard[users[i]].score);
-            var table = document.getElementById("leaderboard");
-            table.appendChild(htmlToElement("<tr><th scope='col'>"+tempName+"</th><th scope='col'>"+tempScore+"</th></tr>"));
-          }
+	        var users = ["arulkapoor@gmail","carmel@carmel", "festomanny4@gmail", "n@n", "owen@owen", "p@p", "williamcgolub@gmail", "l@l"];
+	        var leaderboard = (snapshot.val());
+	        for (var i = 0; i<users.length; i++) {
+	            var tempName = (leaderboard[users[i]].name);
+	            var tempScore = (leaderboard[users[i]].score);
+	            var table = document.getElementById("leaderboard");
+	            table.appendChild(htmlToElement("<tr><th scope='col'>"+tempName+"</th><th scope='col'>"+tempScore+"</th></tr>"));
+	        }
         });
     </script>
   </body>
