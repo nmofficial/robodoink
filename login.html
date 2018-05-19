@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Log In</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-auth.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDr-xP4FISmfluSftaWc0fZRVxUMEac8Ck",
+        authDomain: "robodoi-20d60.firebaseapp.com",
+        databaseURL: "https://robodoi-20d60.firebaseio.com",
+        projectId: "robodoi-20d60",
+        storageBucket: "robodoi-20d60.appspot.com",
+        messagingSenderId: "619073156015"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <center>
+      <h1>Welcome to RoboDoink</h1>
+      <h3>Please Sign In</h3>
+      <input type="email" name="email" id="email" placeholder="Email">
+      <input type="password" name="password" id="password" placeholder="Password">
+      <button onclick="signIn()">Sign In</button>
+      <button onclick="signOut()">Sign Out</button>
+      <br>
+      <pre id="error" style="color:red"></pre>
+      <h7>If you are switching accounts, please hit "Sign Out" first, and then log in with a different account</h7>
+    </center>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+
+    <script>
+      console.log(firebase.auth().currentUser);
+      if(firebase.auth().currentUser!=null){
+        window.location.href="leaderboard";
+      }
+      function signIn(){
+        signOut();
+        email = document.getElementById("email").value;
+        password = document.getElementById("password").value;
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            document.getElementById("error").innerHTML = errorMessage;
+        }).then(function(){
+          console.log("signed in, current user is: " + firebase.auth().currentUser.email);
+          window.location.href="index.html?"+firebase.auth().currentUser.email;
+        });
+      }
+      function signOut(){
+        firebase.auth().signOut().then(function() {
+          console.log("signed out, current user is: " + firebase.auth().currentUser);
+        }).catch(function(error) {
+          // An error happened.
+        });
+      }
+    </script>
+  </body>
+</html>
