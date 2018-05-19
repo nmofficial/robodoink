@@ -201,13 +201,13 @@
 		        //prevents else if (die) from repeating
 		    } else if (die) {
 		        myGameArea.stop();
-		        console.log("score: " + myDoinker.score);
+		        //console.log("score: " + myDoinker.score);
 		        (document.getElementById("restartButton")).appendChild(htmlToElement("<h1>You Died :(</h1>"));
 		        (document.getElementById("restartButton")).appendChild(htmlToElement("<h1 style='background-color:green'>Score: " + myDoinker.score + "</h1>"));
 		        (document.getElementById("restartButton")).appendChild(htmlToElement("<center><button type='button' class='btn btn-warning' onclick='reload()'>Reload!</button></center>"));
 		        var url = window.location.href;
 		        var username = url.substring(url.indexOf('?')+1,url.indexOf('.com'));
-		        console.log(username);
+		        //console.log(username);
 		        dead = true;
 		        return firebase.database().ref('/users/' + username).once('value').then(function(snapshot) {
 				  var score = (snapshot.val() && snapshot.val().score);
@@ -247,9 +247,9 @@
 		            canPressUpInter = true;
 		        }
 		        //for testing purposes:
-		        console.log(myGameArea.frameNumber);
-		        console.log(myDoinker.y);
-		        console.log(myDoinker.speedY);
+		        //console.log(myGameArea.frameNumber);
+		        //console.log(myDoinker.y);
+		        //console.log(myDoinker.speedY);
 		        if (myDoinker.y == 260) {
 		            myDoinker.streak = 0;
 		        }
